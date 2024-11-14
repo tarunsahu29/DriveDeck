@@ -97,16 +97,32 @@ export default function HomePage() {
             {cars.map((car) => (
               <div
                 key={car._id}
-                className="relative cursor-pointer"
+                className="bg-white shadow-md hover:shadow-lg transition-shadow overflow-hidden rounded-lg w-full cursor-pointer"
                 onClick={() => navigate(`/car/${car._id}`)}
               >
                 <img
                   src={car.images[0]?.url}
                   alt={car.title}
-                  className="w-full h-48 object-cover rounded-md mb-4"
+                  className="h-[220px] w-full object-cover hover:scale-105 cursor-pointer transition-transform duration-300"
                 />
-                <h2 className="text-xl font-bold">{car.title}</h2>
-                <p className="text-gray-600">{car.description}</p>
+                <div className="p-3 flex flex-col gap-2">
+                  <h2 className="text-lg font-semibold text-slate-700">
+                    {car.title}
+                  </h2>
+                  <p className="text-sm text-gray-600 line-clamp-2">
+                    {car.description}
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {car.tags.map((tag, index) => (
+                      <span
+                        key={index}
+                        className="bg-slate-500 text-white text-xs px-2 py-1 rounded-full"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
               </div>
             ))}
           </div>
