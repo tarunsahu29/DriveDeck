@@ -6,6 +6,7 @@ import Header from './components/Header'
 import { AuthProvider } from './context/AuthContext'
 import CreateProduct from './pages/home/CreateProduct'
 import ProductDetailPage from './pages/home/ProductDetailPage'
+import SearchResults from './pages/SearchResults'
 export default function App() {
   return (
     <AuthProvider>
@@ -22,6 +23,7 @@ export default function App() {
           <Route path="/car/:id" element={<ProductDetailPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/search" element={<SearchResults />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

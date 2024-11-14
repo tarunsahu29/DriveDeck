@@ -7,7 +7,6 @@ exports.createCar = async (req, res) => {
   const tags = req.body['tags[]'] // Access tags using the correct key
 
   let images = req.files?.images // Access files and check for null
-  // console.log('Images:', images)
 
   // Ensure that images are uploaded
   if (!images) {
@@ -203,5 +202,35 @@ exports.deleteCar = async (req, res) => {
   } catch (error) {
     console.error('Error deleting car:', error.message)
     res.status(500).json({ message: 'Server error' })
+  }
+}
+
+exports.searchCar = async (req, res) => {
+  const { keyword } = req.query // Get the search keyword from query params
+
+  try {
+    if (!keyword) {
+      return res.status(400).json({ message: 'Search keyword is required.' })
+    }
+
+    // Search the cars collection for matching keyword in title, description, or tags
+    const cars = await Car.find({
+      $or: [
+        { title: { $regex: keyword, $options: 'i' } }, // case-insensitive search
+        { description: { $regex: keyword, $options: 'i' } },
+        { tags: { $regex: keyword, $options: 'i' } },
+      ],
+    })
+
+    if (cars.length === 0) {
+      return res
+        .status(404)
+        .json({ message: 'No cars found matching your search.' })
+    }
+
+    res.status(200).json(cars) // Return the list of matching cars
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ message: 'Server error.' })
   }
 }

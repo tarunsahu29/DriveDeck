@@ -8,5 +8,6 @@ router.get('/cars', verifyUser, userController.listCars)
 router.get('/cars/:id', verifyUser, userController.getCar)
 router.put('/cars/:id', verifyUser, userController.updateCar)
 router.delete('/cars/:id', verifyUser, userController.deleteCar)
+router.get('/search', verifyUser, userController.searchCar)
 
 module.exports = router
