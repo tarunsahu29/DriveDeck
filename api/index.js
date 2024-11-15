@@ -35,9 +35,9 @@ app.use(express.urlencoded({ extended: true })) //to parse form data(urlencoded)
 
 app.use(cookieParser())
 
-app.get('/', (req, res) => {
-  res.send('Hello, this is your Car Management API!!')
-})
+// app.get('/', (req, res) => {
+//   res.send('Hello, this is your Car Management API!!')
+// })
 
 // Routes
 app.use('/api/auth', authRoutes)
