@@ -6,6 +6,7 @@ const { v2: cloudinary } = require('cloudinary')
 const connectMongoDB = require('./config/connectMongoDB')
 const authRoutes = require('./routes/auth.route')
 const userRoutes = require('./routes/user.route')
+const path = require('path')
 
 dotenv.config()
 
@@ -17,6 +18,9 @@ cloudinary.config({
 
 const app = express()
 const PORT = process.env.PORT || 8000
+
+// const __dirname = path.resolve() // CommonJS workaround for compatibility
+console.log(__dirname)
 
 // Use express-fileupload middleware
 app.use(
@@ -39,17 +43,11 @@ app.get('/', (req, res) => {
 app.use('/api/auth', authRoutes)
 app.use('/api/user', userRoutes)
 
+app.use(express.static(path.join(__dirname, '/client/dist')))
 
-/// TODO: 
-// app.use((err, req, res, next) => {
-//   const statusCode = err.statusCode || 500
-//   const message = err.message || 'Internal Server Error'
-//   return res.status(statusCode).json({
-//     success: false,
-//     statusCode,
-//     message,
-//   })
-// })
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname,'client','dist','index.html'))
+})
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}!!`)
