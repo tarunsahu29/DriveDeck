@@ -1,5 +1,6 @@
 const Car = require('../models/Car')
 const cloudinary = require('cloudinary').v2
+const mongoose = require('mongoose')
 
 //Create car
 exports.createCar = async (req, res) => {
@@ -207,6 +208,7 @@ exports.deleteCar = async (req, res) => {
 
 exports.searchCar = async (req, res) => {
   const { keyword } = req.query // Get the search keyword from query params
+  const userId = new mongoose.Types.ObjectId(req.user._id)
 
   try {
     if (!keyword) {
@@ -215,10 +217,15 @@ exports.searchCar = async (req, res) => {
 
     // Search the cars collection for matching keyword in title, description, or tags
     const cars = await Car.find({
-      $or: [
-        { title: { $regex: keyword, $options: 'i' } }, // case-insensitive search
-        { description: { $regex: keyword, $options: 'i' } },
-        { tags: { $regex: keyword, $options: 'i' } },
+      $and: [
+        { user: userId },
+        {
+          $or: [
+            { title: { $regex: keyword, $options: 'i' } }, // case-insensitive search
+            { description: { $regex: keyword, $options: 'i' } },
+            { tags: { $regex: keyword, $options: 'i' } },
+          ],
+        },
       ],
     })
 
